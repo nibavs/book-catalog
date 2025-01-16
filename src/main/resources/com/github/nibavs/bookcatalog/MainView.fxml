@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.GridPane?>
+<GridPane xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.github.nibavs.bookcatalog.controller.MainController" hgap="10" vgap="10" alignment="CENTER">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <TableView fx:id="bookTable" GridPane.fillWidth="600" GridPane.rowIndex="2">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="20" />
+            <TableColumn fx:id="titleColumn" text="Title" prefWidth="230" />
+            <TableColumn fx:id="authorColumn" text="Author" prefWidth="200" />
+            <TableColumn fx:id="yearColumn" text="Year" prefWidth="100" />
+            <TableColumn fx:id="pagesColumn" text="Pages" prefWidth="100" />
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+        </columns>
+    </TableView>
+
+    <Label fx:id="console" GridPane.rowIndex="3" GridPane.halignment="CENTER"/>
+    <Button fx:id="getAllBooksButton" text="Get all books" onAction="#onGetAllBooksButtonClicked" GridPane.rowIndex="3"/>
+    <Button fx:id="deleteBookButton" text="Delete book" onAction="#onDeleteBookButtonClicked" GridPane.rowIndex="4"/>
+    <Button fx:id="addBookButton" text="Add book" onAction="#onAddBookButtonClicked" GridPane.rowIndex="5"/>
+
+</GridPane>
