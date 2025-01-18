@@ -15,11 +15,11 @@
 
     <TableView fx:id="bookTable" GridPane.fillWidth="600" GridPane.rowIndex="2">
         <columns>
-            <TableColumn fx:id="idColumn" text="ID" prefWidth="20" />
+            <TableColumn fx:id="idColumn" text="ID" prefWidth="40" />
             <TableColumn fx:id="titleColumn" text="Title" prefWidth="230" />
             <TableColumn fx:id="authorColumn" text="Author" prefWidth="200" />
-            <TableColumn fx:id="yearColumn" text="Year" prefWidth="100" />
-            <TableColumn fx:id="pagesColumn" text="Pages" prefWidth="100" />
+            <TableColumn fx:id="yearColumn" text="Year" prefWidth="40" />
+            <TableColumn fx:id="pagesColumn" text="Pages" prefWidth="50" />
             <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
         </columns>
     </TableView>
