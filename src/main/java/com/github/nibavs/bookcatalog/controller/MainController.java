@@ -2,15 +2,12 @@ package com.github.nibavs.bookcatalog.controller;
 
 import com.github.nibavs.bookcatalog.model.Book;
 import com.github.nibavs.bookcatalog.model.BookDAO;
-import com.github.nibavs.bookcatalog.model.Status;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -21,16 +18,25 @@ public class MainController {
     private BookDAO bookDAO = new BookDAO();
 
     @FXML
-    private Label console;
+    private Label mainViewTitle;
 
     @FXML
-    private Button getAllBooksButton;
+    private Label outputStatusLabel;
 
     @FXML
-    private Button addBookButton;
+    private Button updateBookButton;
 
     @FXML
     private Button deleteBookButton;
+
+    @FXML
+    private TextField searchBookTextField;
+
+    @FXML
+    private Button searchBooksButton;
+
+    @FXML
+    private Button addBookButton;
 
     @FXML
     private TableView<Book> bookTable;
@@ -53,6 +59,20 @@ public class MainController {
     @FXML
     private TableColumn<Book, String> statusColumn;
 
+    @FXML
+    public void initialize() {
+        setStyles();
+
+
+        initTableView();
+
+        try {
+            refreshTable();
+        } catch (SQLException e) {
+            outputStatusLabel.setText("Error: " + e.getMessage());
+        }
+
+    }
 
     @FXML
     protected void onAddBookButtonClicked() {
@@ -62,7 +82,7 @@ public class MainController {
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Add book");
             dialogStage.initModality(Modality.WINDOW_MODAL);
-            Scene scene = new Scene(loader.load(), 700, 500);
+            Scene scene = new Scene(loader.load(), 400, 500);
             dialogStage.setScene(scene);
 
 
@@ -76,13 +96,52 @@ public class MainController {
             Book newBook = controller.getNewBook();
             if (newBook != null) {
                 bookDAO.addBook(newBook);
-                console.setText("Book added successfully!");
+                outputStatusLabel.setText("Book added successfully!");
                 refreshTable();
             }
         } catch (SQLException e) {
-            console.setText("Book was not added! Error: " + e.getMessage());
+            outputStatusLabel.setText("Book was not added! Error: " + e.getMessage());
         } catch (Exception e) {
-            console.setText("Error: " + e.getMessage());
+            outputStatusLabel.setText("Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void onUpdateBookButtonClicked() {
+        try {
+            Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
+            if (selectedBook == null) return;
+
+            // Init modal
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/github/nibavs/bookcatalog/UpdateBookModal.fxml"));
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Update book");
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            Scene scene = new Scene(loader.load(), 400, 500);
+            dialogStage.setScene(scene);
+
+
+            UpdateBookController controller = loader.getController();
+//            AUTH add maybe
+            controller.setDialogStage(dialogStage);
+
+            // Selected book into controller
+            controller.setUpdatedBook(selectedBook);
+            dialogStage.showAndWait();
+
+            // Get updated book after modal closing
+            Book updatedBook = controller.getUpdatedBook();
+
+            if (updatedBook != null && controller.isEdited()) {
+                bookDAO.updateBook(updatedBook);
+                outputStatusLabel.setText("Book updated successfully!");
+                refreshTable();
+            }
+        } catch (SQLException e) {
+            outputStatusLabel.setText("Book was not updated! Error: " + e.getMessage());
+        } catch (Exception e) {
+            outputStatusLabel.setText("Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -91,26 +150,49 @@ public class MainController {
     protected void onDeleteBookButtonClicked() {
         try {
             Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-            if (selectedBook != null) {
-                bookDAO.deleteBook(selectedBook);
-                console.setText("Book deleted successfully!");
-                refreshTable();
-            }
+            if (selectedBook == null) return;
+
+            bookDAO.deleteBook(selectedBook);
+            outputStatusLabel.setText("Book deleted successfully!");
+            refreshTable();
+
         } catch (SQLException e) {
-            console.setText("Book was not deleted! Error: " + e.getMessage());
+            outputStatusLabel.setText("Book was not deleted! Error: " + e.getMessage());
         }
 
     }
 
     @FXML
-    protected void onGetAllBooksButtonClicked() {
+    protected void onSearchBooksButtonClicked() {
         try {
-            List<Book> allBooks = bookDAO.getAllBooks();
-            bookTable.getItems().setAll(allBooks);
-
+            List<Book> books;
+            if (searchBookTextField.getText().isEmpty()) {
+                books = bookDAO.getAllBooks();
+            } else {
+                books = bookDAO.getSearchedBooks(searchBookTextField.getText());
+            }
+                bookTable.getItems().setAll(books);
         } catch (SQLException e) {
-            console.setText("Error: " + e.getMessage());
+            outputStatusLabel.setText("Error: " + e.getMessage());
+            e.printStackTrace();
         }
+    }
+
+    protected void initTableView() {
+        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+        pagesColumn.setCellValueFactory(new PropertyValueFactory<>("pages"));
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+    }
+
+    protected void setStyles() {
+        mainViewTitle.setFont(new Font("Arial", 30));
+        outputStatusLabel.setFont(new Font("Arial", 15));
+        outputStatusLabel.setStyle("-fx-text-fill: red;");
+        updateBookButton.setMinWidth(60);
+        deleteBookButton.setMinWidth(60);
     }
 
     protected void refreshTable() throws SQLException {
@@ -119,21 +201,4 @@ public class MainController {
         bookTable.getItems().setAll(allBooks);
     }
 
-    @FXML
-    public void initialize() {
-
-        idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
-        yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
-        pagesColumn.setCellValueFactory(new PropertyValueFactory<>("pages"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        try {
-            refreshTable();
-        } catch (SQLException e) {
-            console.setText("Error: " + e.getMessage());
-        }
-
-    }
 }
