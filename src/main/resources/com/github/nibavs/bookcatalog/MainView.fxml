@@ -7,26 +7,31 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TextField?>
 <GridPane xmlns:fx="http://javafx.com/fxml"
           fx:controller="com.github.nibavs.bookcatalog.controller.MainController" hgap="10" vgap="10" alignment="CENTER">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <TableView fx:id="bookTable" GridPane.fillWidth="600" GridPane.rowIndex="2">
+    <Label fx:id="mainViewTitle">Book catalog</Label>
+
+    <TableView fx:id="bookTable" GridPane.rowIndex="2" minWidth="700">
         <columns>
             <TableColumn fx:id="idColumn" text="ID" prefWidth="40" />
             <TableColumn fx:id="titleColumn" text="Title" prefWidth="230" />
             <TableColumn fx:id="authorColumn" text="Author" prefWidth="200" />
             <TableColumn fx:id="yearColumn" text="Year" prefWidth="40" />
             <TableColumn fx:id="pagesColumn" text="Pages" prefWidth="50" />
-            <TableColumn fx:id="statusColumn" text="Status" prefWidth="100" />
+            <TableColumn fx:id="statusColumn" text="Status" prefWidth="120" />
         </columns>
     </TableView>
 
-    <Label fx:id="console" GridPane.rowIndex="3" GridPane.halignment="CENTER"/>
-    <Button fx:id="getAllBooksButton" text="Get all books" onAction="#onGetAllBooksButtonClicked" GridPane.rowIndex="3"/>
-    <Button fx:id="deleteBookButton" text="Delete book" onAction="#onDeleteBookButtonClicked" GridPane.rowIndex="4"/>
-    <Button fx:id="addBookButton" text="Add book" onAction="#onAddBookButtonClicked" GridPane.rowIndex="5"/>
+    <Button fx:id="updateBookButton" text="Edit" onAction="#onUpdateBookButtonClicked" GridPane.rowIndex="3"/>
+    <TextField fx:id="searchBookTextField" promptText="Search (Title/Author)" maxWidth="300" GridPane.rowIndex="3" GridPane.halignment="RIGHT" />
+    <Button fx:id="searchBooksButton" text="Search" onAction="#onSearchBooksButtonClicked" GridPane.rowIndex="3" GridPane.halignment="RIGHT"/>
+    <Button fx:id="deleteBookButton" text="Delete" onAction="#onDeleteBookButtonClicked" GridPane.rowIndex="4"/>
+    <Button fx:id="addBookButton" text="New book" onAction="#onAddBookButtonClicked" GridPane.rowIndex="4" GridPane.halignment="RIGHT"/>
+    <Label fx:id="outputStatusLabel" GridPane.rowIndex="5" />
 
 </GridPane>
