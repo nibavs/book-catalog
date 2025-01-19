@@ -25,11 +25,6 @@ public class Book {
         this.status = status;
     }
 
-    // МБ удалить, пока что для теста сеттер
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getId() {
         return id;
     }
