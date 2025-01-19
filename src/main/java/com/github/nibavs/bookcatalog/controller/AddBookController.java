@@ -2,12 +2,11 @@ package com.github.nibavs.bookcatalog.controller;
 
 import com.github.nibavs.bookcatalog.model.Book;
 import com.github.nibavs.bookcatalog.model.Status;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class AddBookController {
@@ -38,25 +37,18 @@ public class AddBookController {
 
     @FXML
     protected void initialize() {
+        modalTitleLabel.setFont(new Font("Arial", 24));
         // Input only integer handling
         // For year
-        bookYearField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    bookYearField.setText(newValue.replaceAll("[^\\d]", ""));
-                }
+        bookYearField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                bookYearField.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
         // For pages
-        bookPagesField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    bookPagesField.setText(newValue.replaceAll("[^\\d]", ""));
-                }
+        bookPagesField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                bookPagesField.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
 
@@ -89,8 +81,6 @@ public class AddBookController {
     public Book getNewBook() {
         return newBook;
     }
-
-
 
 
 }
