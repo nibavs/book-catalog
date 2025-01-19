@@ -65,4 +65,27 @@ public class BookDAO {
         return books;
     }
 
+    public List<Book> getSearchedBooks(String search) throws SQLException {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT * FROM book WHERE title LIKE ? UNION SELECT * FROM book WHERE author LIKE ?";
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, "%" + search + "%");
+            preparedStatement.setString(2, "%" + search + "%");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    books.add(new Book(
+                            resultSet.getInt("id"),
+                            resultSet.getString("title"),
+                            resultSet.getString("author"),
+                            resultSet.getInt("year"),
+                            resultSet.getInt("pages"),
+                            Status.valueOf(resultSet.getString("status"))
+                            ));
+                }
+            }
+        }
+        return books;
+    }
+
 }
