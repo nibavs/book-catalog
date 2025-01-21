@@ -34,10 +34,13 @@ public class AddBookController {
     @FXML
     private ChoiceBox<Status> bookStatusChoiceBox;
 
+    @FXML
+    private Label errorOutputLabel;
+
 
     @FXML
     protected void initialize() {
-        modalTitleLabel.setFont(new Font("Arial", 24));
+        setStyles();
         // Input only integer handling
         // For year
         bookYearField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -57,16 +60,22 @@ public class AddBookController {
 
     @FXML
     protected void onConfirmButtonClicked() {
-        // Error handling here
-        String bookTitle = bookTitleField.getText();
-        String bookAuthor = bookAuthorField.getText();
-        int bookYear = Integer.parseInt(bookYearField.getText());
-        int bookPages = Integer.parseInt(bookPagesField.getText());
-        Status bookStatus = bookStatusChoiceBox.getValue();
+        try {
+            String bookTitle = bookTitleField.getText();
+            String bookAuthor = bookAuthorField.getText();
+            int bookYear = Integer.parseInt(bookYearField.getText());
+            int bookPages = Integer.parseInt(bookPagesField.getText());
+            Status bookStatus = bookStatusChoiceBox.getValue();
 
-        newBook = new Book(bookTitle, bookAuthor, bookYear, bookPages, bookStatus);
+            if (bookTitle.isEmpty() || bookAuthor.isEmpty() || bookStatus == null) {
+                throw new Exception();
+            }
 
-        dialogStage.close();
+            newBook = new Book(bookTitle, bookAuthor, bookYear, bookPages, bookStatus);
+            dialogStage.close();
+        } catch (Exception e) {
+            errorOutputLabel.setText("Fill in the fields correctly!");
+        }
     }
 
     @FXML
@@ -81,6 +90,13 @@ public class AddBookController {
     public Book getNewBook() {
         return newBook;
     }
+
+    protected void setStyles() {
+        modalTitleLabel.setFont(new Font("Arial", 24));
+        errorOutputLabel.setFont(new Font("Arial", 15));
+        errorOutputLabel.setStyle("-fx-text-fill: red;");
+    }
+
 
 
 }
