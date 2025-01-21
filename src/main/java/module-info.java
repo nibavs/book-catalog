@@ -4,6 +4,7 @@ module com.github.nibavs.bookcatalog {
     requires java.sql;
     requires org.postgresql.jdbc;
     requires java.desktop;
+    requires io.github.cdimascio.dotenv.java;
 
 
     opens com.github.nibavs.bookcatalog to javafx.fxml;

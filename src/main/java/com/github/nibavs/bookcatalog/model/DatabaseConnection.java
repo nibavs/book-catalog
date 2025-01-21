@@ -1,13 +1,15 @@
 package com.github.nibavs.bookcatalog.model;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static String URL = "jdbc:postgresql://localhost:5432/book-catalog";
-    private static String USER = "postgres";
-    private static String PASSWORD = "23099";
+    private static final String URL = "jdbc:postgresql://localhost:5432/book-catalog";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = Dotenv.load().get("DB_PASSWORD");
 
     private DatabaseConnection() {}
 
