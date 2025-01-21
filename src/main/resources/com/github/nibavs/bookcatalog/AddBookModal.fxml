@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.nibavs.bookcatalog.controller.AddBookController" hgap="10" vgap="10" alignment="CENTER">
+<GridPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.github.nibavs.bookcatalog.controller.AddBookController" hgap="15" vgap="10" alignment="CENTER">
     <Label fx:id="modalTitleLabel">New book</Label>
     <TextField fx:id="bookTitleField" promptText="Title" GridPane.rowIndex="1" prefWidth="220"/>
     <TextField fx:id="bookAuthorField" promptText="Author" GridPane.rowIndex="2" />
@@ -11,6 +11,7 @@
     <TextField fx:id="bookPagesField" promptText="Pages" GridPane.rowIndex="4" />
     <Label fx:id="bookStatusLabel" GridPane.rowIndex="5">Book status: </Label>
     <ChoiceBox fx:id="bookStatusChoiceBox" GridPane.rowIndex="5" GridPane.halignment="RIGHT" prefWidth="130"/>
+    <Label fx:id="errorOutputLabel" GridPane.rowIndex="6"/>
 
     <Button text="Add" onAction="#onConfirmButtonClicked" GridPane.rowIndex="8" GridPane.halignment="RIGHT" prefWidth="60"/>
     <Button text="Cancel" onAction="#onCancelButtonClicked" GridPane.rowIndex="8" prefWidth="60"/>

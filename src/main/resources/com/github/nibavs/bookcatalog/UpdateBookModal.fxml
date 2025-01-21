@@ -11,6 +11,7 @@
     <TextField fx:id="bookPagesField" promptText="Pages" GridPane.rowIndex="4" />
     <Label fx:id="bookStatusLabel" GridPane.rowIndex="5">Book status: </Label>
     <ChoiceBox fx:id="bookStatusChoiceBox" GridPane.rowIndex="5" GridPane.halignment="RIGHT" prefWidth="130"/>
+    <Label fx:id="errorOutputLabel" GridPane.rowIndex="6"/>
 
     <Button text="Edit" onAction="#onConfirmButtonClicked" GridPane.rowIndex="8" GridPane.halignment="RIGHT" prefWidth="60"/>
     <Button text="Cancel" onAction="#onCancelButtonClicked" GridPane.rowIndex="8" prefWidth="60"/>
