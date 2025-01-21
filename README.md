@@ -40,10 +40,24 @@ This is a book catalog application that uses PostgreSQL as the database and JDBC
    git clone https://github.com/yourusername/book-catalog.git
 2. Make sure you have Java 11+ and Maven installed
 3. Create a .env file in the root of the project and define the database connection parameters:
-  ```bash
-   DB_PASSWORD=your_password_here.git
-4. 
-  
    ```bash
-   git clone https://github.com/yourusername/book-catalog.git
-   cd book-catalog
+   DB_URL="your_db_url_here"
+   DB_USER="your_username_here"
+   DB_PASSWORD="your_password_here"
+4. Run the application using Maven:
+   ```bash
+   mvn javafx:run
+5. To make the application work, you will need a configured PostgreSQL database with the following table for books:
+   ```bash
+   CREATE TABLE book (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    year INT,
+    pages INT,
+    status VARCHAR(50)
+   };
+   
+
+
+
