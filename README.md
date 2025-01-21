@@ -57,7 +57,3 @@ This is a book catalog application that uses PostgreSQL as the database and JDBC
     pages INT,
     status VARCHAR(50)
    };
-   
-
-
-
