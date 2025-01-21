@@ -21,7 +21,7 @@ public class MainController {
     private Label mainViewTitle;
 
     @FXML
-    private Label outputStatusLabel;
+    private Label outputInfoLabel;
 
     @FXML
     private Button updateBookButton;
@@ -69,7 +69,7 @@ public class MainController {
         try {
             refreshTable();
         } catch (SQLException e) {
-            outputStatusLabel.setText("Error: " + e.getMessage());
+            printErrorOutput("Error: " + e.getMessage());
         }
 
     }
@@ -96,14 +96,11 @@ public class MainController {
             Book newBook = controller.getNewBook();
             if (newBook != null) {
                 bookDAO.addBook(newBook);
-                outputStatusLabel.setText("Book added successfully!");
+                printInfoOutput("Book added successfully!");
                 refreshTable();
             }
-        } catch (SQLException e) {
-            outputStatusLabel.setText("Book was not added! Error: " + e.getMessage());
         } catch (Exception e) {
-            outputStatusLabel.setText("Error: " + e.getMessage());
-            e.printStackTrace();
+            printErrorOutput("Book was not added! Error: " + e.getMessage());
         }
     }
 
@@ -135,14 +132,11 @@ public class MainController {
 
             if (updatedBook != null && controller.isEdited()) {
                 bookDAO.updateBook(updatedBook);
-                outputStatusLabel.setText("Book updated successfully!");
+                printInfoOutput("Book updated successfully!");
                 refreshTable();
             }
-        } catch (SQLException e) {
-            outputStatusLabel.setText("Book was not updated! Error: " + e.getMessage());
         } catch (Exception e) {
-            outputStatusLabel.setText("Error: " + e.getMessage());
-            e.printStackTrace();
+            printErrorOutput("Book was not updated! Error: " + e.getMessage());
         }
     }
 
@@ -150,14 +144,13 @@ public class MainController {
     protected void onDeleteBookButtonClicked() {
         try {
             Book selectedBook = bookTable.getSelectionModel().getSelectedItem();
-            if (selectedBook == null) return;
-
-            bookDAO.deleteBook(selectedBook);
-            outputStatusLabel.setText("Book deleted successfully!");
-            refreshTable();
-
+            if (selectedBook != null) {
+                bookDAO.deleteBook(selectedBook);
+                printInfoOutput("Book deleted successfully!");
+                refreshTable();
+            }
         } catch (SQLException e) {
-            outputStatusLabel.setText("Book was not deleted! Error: " + e.getMessage());
+            printErrorOutput("Book was not deleted! Error: " + e.getMessage());
         }
 
     }
@@ -173,7 +166,7 @@ public class MainController {
             }
                 bookTable.getItems().setAll(books);
         } catch (SQLException e) {
-            outputStatusLabel.setText("Error: " + e.getMessage());
+            printErrorOutput("Error: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -189,8 +182,7 @@ public class MainController {
 
     protected void setStyles() {
         mainViewTitle.setFont(new Font("Arial", 30));
-        outputStatusLabel.setFont(new Font("Arial", 15));
-        outputStatusLabel.setStyle("-fx-text-fill: red;");
+        outputInfoLabel.setFont(new Font("Arial", 15));
         updateBookButton.setMinWidth(60);
         deleteBookButton.setMinWidth(60);
     }
@@ -199,6 +191,16 @@ public class MainController {
         bookTable.getItems().clear();
         List<Book> allBooks = bookDAO.getAllBooks();
         bookTable.getItems().setAll(allBooks);
+    }
+
+    protected void printErrorOutput(String message) {
+        outputInfoLabel.setStyle("-fx-text-fill: red;");
+        outputInfoLabel.setText(message);
+    }
+
+    protected void printInfoOutput(String message) {
+        outputInfoLabel.setStyle("-fx-text-fill: green;");
+        outputInfoLabel.setText(message);
     }
 
 }
