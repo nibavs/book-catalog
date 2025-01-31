@@ -37,7 +37,7 @@ This is a book catalog application that uses PostgreSQL as the database and JDBC
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/book-catalog.git
+   git clone https://github.com/nibavs/book-catalog.git
 2. Make sure you have Java 11+ and Maven installed
 3. Create a .env file in the root of the project and define the database connection parameters:
    ```bash
